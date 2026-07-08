@@ -1,8 +1,15 @@
+from pathlib import Path
 
-import os
+def load_documents():
+    folder = Path("data/raw")
+    files = folder.glob("*.txt")
+    texts = []
 
-file_path = "data/raw/shorkari_kormochari_sringkhola_o_appeal_bidhimala_2018.txt"
-with open(file_path, encoding='utf-8') as doc:
-    text = doc.read()
-print(text)
+    for file in files:
+        with open(file, encoding='utf-8') as doc:
+            text = doc.read()
+            texts.append({"filename": file, "text":text})
+    return texts
 
+documents = load_documents()
+print(documents[0]["filename"])
