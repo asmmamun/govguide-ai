@@ -1,7 +1,7 @@
 from pathlib import Path
 
-def load_documents():
-    folder = Path("data/raw")
+def load_documents(folder_path):
+    folder = Path(folder_path)
     files = folder.glob("*.txt")
     texts = []
 
@@ -11,5 +11,6 @@ def load_documents():
             texts.append({"filename": file, "text":text})
     return texts
 
-documents = load_documents()
-print(documents[0]["filename"])
+if __name__ == "__main__":
+    documents = load_documents("data/raw")
+    print(documents[0]["filename"])
