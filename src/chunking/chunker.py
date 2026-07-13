@@ -33,7 +33,7 @@ def inspect_chunks(chunks, filename=None):
     print()
 
     for chunk in document_chunks:
-        print(f"\nChunk {chunk['chunk_number']}")
+        print(f"\nChunk {chunk['chunk_number']}/{total_chunks}")
         print(f"Characters: {len(chunk['text'])}")
         print(f"\n{chunk['text']}")
         print("=" * 120)
