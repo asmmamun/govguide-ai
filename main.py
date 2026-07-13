@@ -1,9 +1,21 @@
 from src.ingestion.loader import load_documents
 from src.preprocessing.preprocessor import preprocess_documents
 from src.preprocessing.preprocessor import inspect_documents
-print("Main is running")
+from src.chunking.chunker import chunk_documents, inspect_chunks
 
-documents = load_documents("data/raw")
-inspect_documents(documents)
-preprocessed_docs = preprocess_documents(documents)
-inspect_documents(preprocessed_docs)
+def main():
+    documents = load_documents("data/raw")
+
+    inspect_documents(documents)
+
+    preprocessed_documents = preprocess_documents(documents)
+
+    inspect_documents(preprocessed_documents)
+
+    chunks = chunk_documents(preprocessed_documents)
+
+    inspect_chunks(chunks)
+
+if __name__ == "__main__":
+    print("Main is running")
+    main()
