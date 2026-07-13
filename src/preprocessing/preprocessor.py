@@ -1,9 +1,5 @@
 import random
-
-def preprocess_documents(documents):
-    
-    return documents
-
+import re
 
 def inspect_documents(documents):
     for document in documents:
@@ -18,7 +14,7 @@ def inspect_documents(documents):
         else:
             sample = lines
         
-        print("=" * 80)
+        print("=" * 120)
         print(f"File: {filename}")
         print(f"Characters: {character_count}")
         print(f"Lines: {line_count}\n")
@@ -31,5 +27,25 @@ def inspect_documents(documents):
 
         print("\nRandom 10 consecutive lines:")
         print("\n".join(sample))
-        print("=" * 80)
+        print("=" * 120)
 
+
+def normalize_whitespace(text):
+    lines = text.splitlines()
+
+    cleaned_lines = []
+    for line in lines:
+        line = line.strip()
+        cleaned_lines.append(line)
+    return "\n".join(cleaned_lines)
+
+
+def preprocess_documents(documents):
+    processed_documents = []
+    for document in documents:
+        new_doc = {
+                   "filename": document["filename"],
+                   "text": normalize_whitespace(document["text"])
+                  }
+        processed_documents.append(new_doc)
+    return processed_documents
