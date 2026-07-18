@@ -29,6 +29,6 @@ class VectorStore:
         with open(self.metadata_path, "r", encoding="utf-8") as f:
             self.metadata = json.load(f)
 
-    def search(self, query_embedding, k):
+    def search(self, query_embedding, k=5):
         distances, indices = self.index.search(query_embedding, k)
         return distances, indices
