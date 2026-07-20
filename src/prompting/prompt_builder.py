@@ -1,11 +1,11 @@
-from textwrap import dedant
+from textwrap import dedent
 """
 Prompt builder for the Bangla Government RAG system.
 
 This module is responsible only for constructing prompts.
 It does not perform retrieval or call the LLM.
 """
-PROMPT_TEMPLATE = dedant("""You are an assistant for answering questions about Bangladesh government rules.
+PROMPT_TEMPLATE = dedent("""You are an assistant for answering questions about Bangladesh government rules.
 
     Context:
     {context}

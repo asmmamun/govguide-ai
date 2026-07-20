@@ -1,46 +1,26 @@
-from src.ingestion.loader import load_documents
-from src.preprocessing.preprocessor import preprocess_documents
-from src.preprocessing.preprocessor import inspect_documents
-from src.chunking.chunker import chunk_documents, inspect_chunks
 from src.embedding.embedder import Embedder
 from src.vector_store.vector_store import VectorStore
+from src.retrieval.retriever import Retriever
+from src.prompting.prompt_builder import build_prompt
+from src.llm.llm import generate
 
 def main():
-    documents = load_documents("data/raw")
-
-    inspect_documents(documents)
-
-    preprocessed_documents = preprocess_documents(documents)
-
-    inspect_documents(preprocessed_documents)
-
-    chunks = chunk_documents(preprocessed_documents)
-
-    inspect_chunks(chunks)
-
+    query = input("Write your question please: ")
     embedder = Embedder()
-    texts = [chunk["text"] for chunk in chunks]
-    embeddings = embedder.encode(texts)
-    print(embeddings.shape)
-
-    metadata = []
-    for chunk in chunks:
-        metadata.append({
-            "filename": str(chunk["filename"]),
-            "chunk_number": chunk["chunk_number"],
-            "text": chunk["text"]
-        })
-
-    vector_store = VectorStore(768)
-    vector_store.add(embeddings, metadata)
-    vector_store.save()
+    vector_store = VectorStore(dimension=384)
     vector_store.load()
-    print(vector_store.index.ntotal)
+    retriever = Retriever(embedder, vector_store)
+    results = retriever.retrieve(query, k=3)
+    texts = []
+    for result in results:
+        text = result["text"]
+        texts.append(text)
+    context = "\n\n-------------------\n\n".join(texts)
+
+    prompt = (build_prompt(context, query))
     
-    #vector = vector_store.index.reconstruct(0)
-    #print(vector.shape)
-    #print(vector[:10])   # First 10 values
+    response = generate(prompt)
+    print(response)
 
 if __name__ == "__main__":
-    print("Main is running")
     main()
